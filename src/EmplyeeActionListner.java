@@ -107,6 +107,29 @@ public class EmplyeeActionListner implements ActionListener {
                         p.setQuantity(p.getQuantity() + quantity);
                         exist = 1;
                         JOptionPane.showMessageDialog(Employee.addFrame,"Product exists, quantity has been changed!");
+
+                        if(Worker.panelTop != null)
+                        {
+                            Worker.panelTop.removeAll();
+                            try {
+                                Worker.loadShop();
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            Employee.frame.validate();
+                            Employee.frame.repaint();
+                        }
+                        if(Manager.panelTop != null)
+                        {
+                            Manager.panelTop.removeAll();
+                            try {
+                                Manager.loadShop();
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            Manager.frame.validate();
+                            Manager.frame.repaint();
+                        }
                     }
                 }
                 if(exist == 0)
@@ -118,8 +141,14 @@ public class EmplyeeActionListner implements ActionListener {
                     label.setHorizontalTextPosition(JLabel.CENTER);
                     label.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-                    if(Employee.panelTop != null)
+                    if(Worker.panelTop != null)
                     {
+                        Worker.panelTop.removeAll();
+                        try {
+                            Worker.loadShop();
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         Employee.panelTop.add(label);
                         Employee.frame.validate();
                         Employee.frame.repaint();

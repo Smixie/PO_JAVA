@@ -90,7 +90,6 @@ public class ManagerActionListener implements ActionListener {
                     JOptionPane.showMessageDialog(Manager.addFrame,"New employee added");
                 }
             }
-
         }
         if(e.getSource() == Manager.pClear)
         {
