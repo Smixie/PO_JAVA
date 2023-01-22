@@ -1,0 +1,7 @@
+Honey,30.50,0,Images/honey.jpg
+Apple,1.50,12,Images/apple.jpg
+Coca-cola,5.50,14,Images/coca-cola.jpg
+Carrots,1.50,13,Images/carrots.jpg
+Lays,7.50,7,Images/lays.jpg
+Juice,4.50,11,Images/juice.jpg
+Apple2,8.00,9,Images/apple.jpg

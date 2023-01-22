@@ -1,2 +1,2 @@
-1   Jan Sebastian   customer
-2   Adam Mickiewicz   customer2
+1,Jan,Sebastian,customer
+2,Adam,Mickiewicz,customer2

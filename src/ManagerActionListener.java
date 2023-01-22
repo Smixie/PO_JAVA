@@ -26,7 +26,7 @@ public class ManagerActionListener implements ActionListener {
         }
         if(e.getSource() == Manager.deleteProduct)
         {
-            System.out.print("Usuwanie produktu");
+            Manager.deleteProducts();
         }
         if(e.getSource() == Manager.logout)
         {
@@ -49,7 +49,7 @@ public class ManagerActionListener implements ActionListener {
                 String ePass = Manager.ePassword.getText();
 
                 int epEX = 0;
-                for(Employee emp: Employee.getEmployee())
+                for(Employee emp: Worker.getWorker())
                 {
                     if(emp.getName().equals(eName) && emp.getSurname().equals(surname))
                     {
@@ -59,8 +59,8 @@ public class ManagerActionListener implements ActionListener {
                 }
                 if(epEX == 0)
                 {
-                    int ID = Employee.getEmployee().get(Employee.getEmployee().size() - 1).getId() + 1;
-                    Employee.getEmployee().add(new Employee(ID+1,eName,surname,eSalary,
+                    int ID = Worker.getWorker().get(Worker.getWorker().size() - 1).getId() + 1;
+                    Worker.getWorker().add(new Worker(ID+1,eName,surname,eSalary,
                             String.format("employee%d",ID)));
 
                     try {

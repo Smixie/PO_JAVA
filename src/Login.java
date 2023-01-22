@@ -112,7 +112,16 @@ public class Login extends  JFrame implements ActionListener {
             {
                 try {
                     this.dispose();
-                    Employee.loadEmployeeShop(username.getText());
+                    Worker.loadEmployeeShop(username.getText());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(status == 3)
+            {
+                try {
+                    this.dispose();
+                    Customer.loadCustomeShop(username.getText());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

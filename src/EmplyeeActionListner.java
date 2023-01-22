@@ -14,10 +14,74 @@ public class EmplyeeActionListner implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == Employee.addProduct) {
             Employee.addProduct();
-        } else if (e.getSource() == Employee.deleteProduct) {
-            System.out.print("DP");
+        } else if (e.getSource() == Employee.deleteproductB) {
+            if(Employee.dName.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(Employee.deleteFrame,"Please input value!");
+            }
+            else
+            {
+                String productToDelete = Employee.dName.getText();
+                int exissts = 0;
+                for (int i = 0; i < Product.getProducts().size(); i++) {
+                    Product product = Product.getProducts().get(i);
+                    if (product.getName().equals(productToDelete)) {
+                        Product.getProducts().remove(i);
+                        exissts = 1;
+                        break;
+                    }
+                }
+
+                if(exissts == 1)
+                {
+                    JOptionPane.showMessageDialog(Employee.deleteFrame,"Product has been successfully deleted!");
+                    try {
+                        FileWriter fw = new FileWriter("Data/products.txt", false);
+                        BufferedWriter bw = new BufferedWriter(fw);
+
+                        for(Product op : Product.getProducts())
+                        {
+                            bw.write(String.format("%s,",op.getName()) +
+                                    String.format("%.2f",op.getPrice()).replace(",",".") +
+                                    String.format(",%d,%s",op.getQuantity(),op.getImage()));
+                            bw.newLine();
+                        }
+                        bw.close();
+                        fw.close();
+                    } catch (IOException ep) {
+                        ep.printStackTrace();
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(Employee.deleteFrame, "No such product in our database!");
+                }
+
+                if(Employee.panelTop != null)
+                {
+                    Worker.panelTop.removeAll();
+                    try {
+                        Worker.loadShop();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    Employee.frame.validate();
+                    Employee.frame.repaint();
+                }
+                if(Manager.panelTop != null)
+                {
+                    Manager.panelTop.removeAll();
+                    try {
+                        Manager.loadShop();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    Manager.panelTop.validate();
+                    Manager.panelTop.repaint();
+                }
+
+            }
         } else if (e.getSource() == Employee.logoutE) {
-            Employee.close();
+            Worker.close();
             new Login();
         }
         if(e.getSource() == Employee.addProductButton) {
@@ -87,6 +151,10 @@ public class EmplyeeActionListner implements ActionListener {
             }else {
                 JOptionPane.showMessageDialog(Employee.addFrame,"Price or quantity are equal or less than zero");
             }
+        }
+        if(e.getSource() == Worker.deleteProduct)
+        {
+            Worker.deleteProducts();
         }
         if(e.getSource() == Employee.pClear)
         {

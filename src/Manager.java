@@ -4,8 +4,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Manager extends Employee{
     public static JButton addEmployee,deleteEmployee,addProduct,deleteProduct,addEmp;
@@ -19,15 +21,15 @@ public class Manager extends Employee{
         super(id, name, surname, salary,username);
         actionListener = new ManagerActionListener(this);
     }
-    private static ArrayList<Manager> managers;
-    public static ArrayList<Manager> getManagers() { return managers;}
-    public static void setManagers(ArrayList<Manager> managers) {
+    private static ArrayList<Employee> managers;
+    public static ArrayList<Employee> getManagers() { return managers;}
+    public static void setManagers(ArrayList<Employee> managers) {
         Manager.managers = managers;
     }
     public static JPanel loadRightPanel(String searchName, int frameSize){
-        managers = FileReader.readManager("Data/managers.txt");
+        managers = Manager.readFile("Data/managers.txt");
         JPanel rightPanel = new JPanel();
-        for (Manager manager : managers) {
+        for (Employee manager : managers) {
             if (manager.getUsername().equals(searchName)) {
                 rightPanel.setPreferredSize(new Dimension(frameSize - 140, 100));
 
@@ -53,27 +55,7 @@ public class Manager extends Employee{
         }
         return rightPanel;
     }
-
-    public static void loadManager(String user) throws IOException {
-
-        frame = new JFrame();
-        panelTop = new JPanel();
-        JPanel panelBot = new JPanel();
-        //scroll = new JScrollPane(panelTop);
-
-        frame.setTitle("Shop");
-        frame.setResizable(false);
-        frame.setSize(900,700);
-        frame.setLayout(new BorderLayout());
-        frame.getContentPane().setBackground(Color.white);
-
-        //panelTop.setPreferredSize(new Dimension(780,350));
-
-//        scroll.setViewportView(panelTop);
-//        //scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-//        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//        scroll.getVerticalScrollBar().setUnitIncrement(16);
-
+    public static void loadShop() throws IOException {
         panelTop.setLayout(new GridLayout(0, 6));
         ((GridLayout) panelTop.getLayout()).setHgap(5);
         ((GridLayout) panelTop.getLayout()).setVgap(25);
@@ -102,10 +84,30 @@ public class Manager extends Employee{
             panelTop.add(label);
         }
         panelTop.setBackground(Color.white);
-        panelBot.setBackground(Color.white);
-
         panelTop.setBorder(new EmptyBorder(10,10,10,10));
+    }
+    public static void loadManager(String user) throws IOException {
 
+        frame = new JFrame();
+        panelTop = new JPanel();
+        JPanel panelBot = new JPanel();
+        //scroll = new JScrollPane(panelTop);
+
+        frame.setTitle("Shop");
+        frame.setResizable(false);
+        frame.setSize(900,700);
+        frame.setLayout(new BorderLayout());
+        frame.getContentPane().setBackground(Color.white);
+
+        //panelTop.setPreferredSize(new Dimension(780,350));
+
+//        scroll.setViewportView(panelTop);
+//        //scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+//        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        scroll.getVerticalScrollBar().setUnitIncrement(16);
+
+        loadShop();
+        panelBot.setBackground(Color.white);
         frame.add(panelTop, BorderLayout.PAGE_START);
         frame.add(panelBot,BorderLayout.PAGE_END);
 
@@ -210,5 +212,27 @@ public class Manager extends Employee{
         addFrame.setLocationRelativeTo(null);
         addFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addFrame.setVisible(true);
+    }
+
+    public static ArrayList<Employee> readFile(String filename) {
+        ArrayList<Employee> mng = new ArrayList<>();
+
+        try {
+            Scanner in = new Scanner(new File(filename));
+            while (in.hasNextLine()) {
+                String line = in.nextLine();
+                String[] parts = line.split(",");
+                int id = Integer.parseInt(parts[0]);
+                String name = parts[1];
+                String surname = parts[2];
+                double salary = Double.parseDouble(parts[3]);
+                String username = parts[4];
+                mng.add(new Manager(id,name,surname,salary,username));
+            }
+            in.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return mng;
     }
 }

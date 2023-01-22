@@ -26,8 +26,8 @@ public class FileReader {
         return products;
     }
 
-    public static ArrayList<Employee> readEmployee(String filename) {
-        ArrayList<Employee> emp = new ArrayList<>();
+    public static ArrayList<Customer> readCustomers(String filename) {
+        ArrayList<Customer> cst = new ArrayList<>();
 
         try {
             Scanner in = new Scanner(new File(filename));
@@ -37,35 +37,13 @@ public class FileReader {
                 int id = Integer.parseInt(parts[0]);
                 String name = parts[1];
                 String surname = parts[2];
-                double salary = Double.parseDouble(parts[3]);
-                String username = parts[4];
-                emp.add(new Employee(id,name,surname,salary,username));
+                String username = parts[3];
+                cst.add(new Customer(id,name,surname,username));
             }
             in.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return emp;
-    }
-    public static ArrayList<Manager> readManager(String filename) {
-        ArrayList<Manager> mng = new ArrayList<>();
-
-        try {
-            Scanner in = new Scanner(new File(filename));
-            while (in.hasNextLine()) {
-                String line = in.nextLine();
-                String[] parts = line.split(",");
-                int id = Integer.parseInt(parts[0]);
-                String name = parts[1];
-                String surname = parts[2];
-                double salary = Double.parseDouble(parts[3]);
-                String username = parts[4];
-                mng.add(new Manager(id,name,surname,salary,username));
-            }
-            in.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return mng;
+        return cst;
     }
 }
