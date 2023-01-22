@@ -30,32 +30,14 @@ public class Customer {
     public String getSurname() {
         return surname;
     }
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
     public String getName() {
         return name;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public int getId() {
-        return id;
     }
     public String getLogin() {
         return login;
     }
-    public void setLogin(String login) {
-        this.login = login;
-    }
     public static ArrayList<Customer> getCustomers() {
         return customers;
-    }
-    public void setCustomers(ArrayList<Customer> customers) {
-        Customer.customers = customers;
     }
     private static ArrayList<Cart> cart = new ArrayList<Cart>();
     public static ArrayList<Cart> getCart(){return cart;}

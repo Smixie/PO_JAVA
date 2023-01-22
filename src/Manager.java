@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Manager extends Employee{
-    public static JButton addEmployee,deleteEmployee,addProduct,deleteProduct,addEmp;
-    public static JTextField eSurname,ePassword,eLogin,eSalary;
+    public static JButton addEmployee,deleteEmployee,addProduct,deleteProduct,addEmp,okDelete;
+    public static JTextField eSurname,ePassword,eLogin,eSalary,delete;
     public static JButton logout;
-    public static JFrame frame;
+    public static JFrame frame,deleteEmployeeFrame;
     public static JPanel panelTop;
     private static JScrollPane scroll;
     private static ManagerActionListener actionListener;
@@ -212,6 +212,48 @@ public class Manager extends Employee{
         addFrame.setLocationRelativeTo(null);
         addFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addFrame.setVisible(true);
+    }
+
+    public static void deleteEmployee()
+    {
+        deleteEmployeeFrame = new JFrame();
+        deleteEmployeeFrame.setResizable(false);
+        deleteEmployeeFrame.setTitle("Fire employee");
+        deleteEmployeeFrame.setSize(400,400);
+        deleteEmployeeFrame.getContentPane().setBackground(Color.white);
+
+        JPanel employ = new JPanel();
+        employ.setLayout(new BoxLayout(employ,BoxLayout.Y_AXIS));
+        employ.setBackground(Color.white);
+
+        for(Employee emp : Worker.getWorker())
+        {
+            JLabel wartosc = new JLabel(String.format("%d %s %s",emp.getId(), emp.getName(),emp.getSurname()));
+            wartosc.setPreferredSize(new Dimension(200,30));
+            wartosc.setFont(new Font("Arial", Font.PLAIN, 20));
+            employ.add(wartosc);
+        }
+
+        JLabel id = new JLabel("PROVIDE ID");
+        id.setBounds(130,240,200,30);
+        id.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        delete = new JTextField();
+        delete.setBounds(50,280,300,30);
+        delete.addActionListener(actionListener);
+
+        okDelete = new JButton("FIRE EMPLOYEE");
+        okDelete.setBounds(120,320,150,30);
+        okDelete.addActionListener(actionListener);
+
+        deleteEmployeeFrame.add(id);
+        deleteEmployeeFrame.add(delete);
+        deleteEmployeeFrame.add(okDelete);
+        deleteEmployeeFrame.add(employ);
+
+        deleteEmployeeFrame.setLocationRelativeTo(null);
+        deleteEmployeeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        deleteEmployeeFrame.setVisible(true);
     }
 
     public static ArrayList<Employee> readFile(String filename) {

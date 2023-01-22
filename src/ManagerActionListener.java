@@ -1,9 +1,8 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class ManagerActionListener implements ActionListener {
     public ManagerActionListener(Manager manager) {
@@ -22,7 +21,7 @@ public class ManagerActionListener implements ActionListener {
         }
         if(e.getSource() == Manager.deleteEmployee)
         {
-            System.out.print("Usuwanie pracownika");
+            Manager.deleteEmployee();
         }
         if(e.getSource() == Manager.deleteProduct)
         {
@@ -98,6 +97,77 @@ public class ManagerActionListener implements ActionListener {
             Manager.eLogin.setText("");
             Manager.eSurname.setText("");
             Manager.pName.setText("");
+        }
+        if(e.getSource() == Manager.okDelete)
+        {
+            try {
+                int idNumber = Integer.parseInt(Manager.delete.getText());
+                if (Manager.delete.getText().equals("")) {
+                    JOptionPane.showMessageDialog(Manager.deleteEmployeeFrame, "Please provide ID(number)");
+                }
+                boolean isEmp = false;
+                String hisLogin = null;
+                for(Employee work : Worker.getWorker())
+                {
+                    int id = work.getId();
+                    if(id == idNumber){
+                        Worker.getWorker().remove(work);
+                        hisLogin = work.getUsername();
+                        isEmp = true;
+                        break;
+                    }
+                }
+                if(isEmp)
+                {
+                    JOptionPane.showMessageDialog(Manager.deleteEmployeeFrame, "Employee successfully fired");
+
+                    try {
+                        FileWriter fw = new FileWriter("Data/employes.txt", false);
+                        BufferedWriter bw = new BufferedWriter(fw);
+
+                        for(Employee work : Worker.getWorker())
+                        {
+                            bw.write(String.format("%d,%s,%s,",work.getId(),work.getName(),work.getSurname()) +
+                                    String.format("%.2f",work.getSalary()).replace(",",".") +
+                                    String.format(",%s",work.getUsername()));
+                            bw.newLine();
+                        }
+                        bw.close();
+                        fw.close();
+                    } catch (IOException ep) {
+                        ep.printStackTrace();
+                    }
+
+                    Scanner in;
+                    try {
+                        StringBuilder data = new StringBuilder();
+                        in = new Scanner(new File("Data/loginCredentials.txt"));
+                        while (in.hasNextLine()) {
+                            String line = in.nextLine();
+                            String[] parts = line.split(",");
+                            String lg = parts[0];
+                            if (!hisLogin.equals(lg)) {
+                                data.append(line).append("\n");
+                            }
+                        }
+                        FileWriter fw = new FileWriter("Data/loginCredentials.txt", false);
+                        BufferedWriter bw = new BufferedWriter(fw);
+                        bw.write(data.toString());
+                        bw.close();
+                        fw.close();
+
+                    } catch (IOException esd) {
+                        throw new RuntimeException(esd);
+                    }
+                    in.close();
+                }
+                else {
+                    JOptionPane.showMessageDialog(Manager.deleteEmployeeFrame, "No such employee");
+                }
+            }catch (NumberFormatException ep)
+            {
+                JOptionPane.showMessageDialog(Manager.deleteEmployeeFrame, "Please provide ID(number)");
+            }
         }
     }
 }
